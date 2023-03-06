@@ -43,11 +43,19 @@ trait WinnerByRow[B <: Board, W <: Player]
 given winsOneRow[R <: HList, RT <: HList, P <: Player](using SameValues[R, P]): WinnerByRow[R :: RT, P] with   {}
 given winsAnyRow[R <: HList, RT <: HList, P <: Player](using WinnerByRow[RT, P]): WinnerByRow[R :: RT, P] with {}
 
-// TODO: continue here: https://youtu.be/sqTtZ3BQnRQ?t=1103
-
 // winner by column
+// take nth element
+trait TakeNth[L <: HList, N <: Nat, V]
+given tnBasic[T <: HList, V]: TakeNth[V :: T, _0, V] with                                               {}
+given tnInductive[H, T <: HList, N <: Nat, V](using TakeNth[T, N, V]): TakeNth[H :: T, Succ[N], V] with {}
+
+// map column
+trait MapColumn[B <: Board, C <: Nat, O <: HList]
+// continue here: https://youtu.be/sqTtZ3BQnRQ?t=1487
+
 // winner by diagonal 1
+
 // winner by diagonal 2
 
 @main def hello: Unit =
-  val a = summon[WinnerByRow[XRow :: EmptyRow :: EmptyRow :: HNil, "X"]]
+  val a = summon[WinnerByRow[XRow :: EmptyRow :: EmptyRow :: HNil, X]]
