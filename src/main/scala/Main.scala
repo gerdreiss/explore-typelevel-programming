@@ -51,8 +51,14 @@ given tnInductive[H, T <: HList, N <: Nat, V](using TakeNth[T, N, V]): TakeNth[H
 
 // map column
 trait MapColumn[B <: Board, C <: Nat, O <: HList]
-// continue here: https://youtu.be/sqTtZ3BQnRQ?t=1487
-
+// matrix 1xn => a single value
+given mpBasic[R <: HList, C <: Nat, V](using TakeNth[R, C, V]): MapColumn[R :: HNil, C, V :: HNil] with {}
+// matrix mxn => take first value of first row, mapColumn[(m - 1)xn]
+given mpInductive[R <: HList, RT <: HList, C <: Nat, V, VT <: HList](using
+    TakeNth[R, C, V],
+    MapColumn[RT, C, VT],
+): MapColumn[R :: RT, C, V :: VT] with {}
+// TODO: continue here: https://youtu.be/sqTtZ3BQnRQ?t=1701
 // winner by diagonal 1
 
 // winner by diagonal 2
